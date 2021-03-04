@@ -26,8 +26,8 @@ class _NewTransactionState extends State<NewTransaction> {
       return;
     }
 
-    widget._addNewTransaction(
-      enteredTitle,
+     widget._addNewTransaction(
+     titleController.text,
       enteredAmount,
       _selectedDate,
     );
@@ -62,18 +62,46 @@ class _NewTransactionState extends State<NewTransaction> {
           children: [
             TextField(
               decoration: InputDecoration(
-                labelText: 'Title',
-              ),
+                  // labelText: 'Title',
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 2,
+                      color: Colors.green,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.green,
+                      width: 2,
+                    ),
+                  ),
+                  hintText: 'Title'),
               controller: titleController,
               onSubmitted: (_) => submitData,
               // onChanged: (String value) {
               // titleInput = value;
               // },
             ),
+            SizedBox(
+              height: 10,
+            ),
             TextField(
               decoration: InputDecoration(
-                labelText: 'Amount',
-              ),
+                  // labelText: 'Amount',
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 2,
+                      color: Colors.green,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.green,
+                      width: 2,
+                    ),
+                  ),
+                  hintText: 'Amount'),
+
               // onChanged: (String value) => amountInput = value,
               controller: amountController,
               keyboardType: TextInputType.number,
@@ -92,8 +120,11 @@ class _NewTransactionState extends State<NewTransaction> {
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
-                  FlatButton(
-                    textColor: Colors.green,
+                  RaisedButton(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(5.0)),
+                    color: Colors.green,
+                    textColor: Colors.white,
                     onPressed: _showingDatePicker,
                     child: Text(
                       'Choose The Date',
@@ -106,8 +137,8 @@ class _NewTransactionState extends State<NewTransaction> {
             ),
             RaisedButton(
               shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(10.0)),
-              color: Colors.green,
+                  borderRadius: new BorderRadius.circular(5.0)),
+              color: Colors.purple,
               textColor: Colors.white,
               onPressed: submitData,
               // print(titleInput);

@@ -43,6 +43,7 @@ class Chart extends StatelessWidget {
       shadowColor: Colors.greenAccent[700],
       margin: EdgeInsets.symmetric(horizontal: 25 , vertical: 10),
       child: Container(
+      
         padding:EdgeInsets.all(15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
