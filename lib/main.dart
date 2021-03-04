@@ -54,7 +54,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTranactionList = [
-    
     Transaction(
       id: 't1',
       title: 'New Shirt',
@@ -67,24 +66,22 @@ class _MyHomePageState extends State<MyHomePage> {
       amount: 50.67,
       date: DateTime.now(),
     ),
-      
   ];
-
 
   List<Transaction> get _recentTransactions {
     return _userTranactionList.where((tx) {
-      return tx.date.isAfter(DateTime.now().subtract(   // if tx.date is after this date it will be true .
+      return tx.date.isAfter(DateTime.now().subtract(
+        // if tx.date is after this date it will be true .
         new Duration(days: 7),
-
       ));
     }).toList();
   }
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime selectedDate) {
     final newTransaction = new Transaction(
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: selectedDate,
       id: DateTime.now().toString(),
     );
 
@@ -106,6 +103,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTranactionList.removeWhere((element) => element.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: [
           IconButton(
-            iconSize: 28.0,
+              iconSize: 28.0,
               icon: Icon(
                 Icons.add_circle_outline_outlined,
               ),
@@ -135,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Chart(_recentTransactions),
-            TranactionList(_userTranactionList),
+            TranactionList(_userTranactionList, _deleteTransaction),
           ],
         ),
       ),

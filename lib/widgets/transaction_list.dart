@@ -4,12 +4,13 @@ import '../models/transaction.dart'; // packge to formatt date
 
 class TranactionList extends StatelessWidget {
   final List<Transaction> tranactions;
-  TranactionList(this.tranactions);
+  final Function deleteTransaction;
+  TranactionList(this.tranactions , this.deleteTransaction);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 550,
       child: tranactions.isEmpty
           ? Column(
               children: [
@@ -42,7 +43,7 @@ class TranactionList extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Card(
                   elevation: 10,
-                  margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 5),
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   shadowColor: Colors.green,
                   child: ListTile(
                     leading: CircleAvatar(
@@ -61,6 +62,11 @@ class TranactionList extends StatelessWidget {
                     ),
                     subtitle: Text(
                       DateFormat.yMMMd().format(tranactions[index].date),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.cancel_sharp),
+                      color: Colors.red,
+                      onPressed: ()=> deleteTransaction(tranactions[index].id),
                     ),
                   ),
                 );
