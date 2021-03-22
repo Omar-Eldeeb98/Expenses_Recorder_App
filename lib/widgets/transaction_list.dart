@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import '../models/transaction.dart'; // packge to formatt date
+import '../models/transaction.dart';
+import 'transaction_item.dart'; // packge to formatt date
 
 class TranactionList extends StatelessWidget {
   final List<Transaction> tranactions;
   final Function deleteTransaction;
-  TranactionList(this.tranactions , this.deleteTransaction);
+  TranactionList(this.tranactions, this.deleteTransaction);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 550,
-      child: tranactions.isEmpty
-          ? Column(
+    final mediaQuery = MediaQuery.of(context);
+    return tranactions.isEmpty
+        ? LayoutBuilder(builder: (context, constarints) {
+            return Column(
               children: [
                 SizedBox(
-                  height: 60,
+                  height: constarints.maxHeight * 0.05,
                 ),
                 Text(
                   'No Transactions Added Yet!',
@@ -28,51 +28,26 @@ class TranactionList extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: constarints.maxHeight * 0.03,
                 ),
                 Container(
-                  height: 200,
+                  height: constarints.maxHeight * 0.6,
                   child: Image.asset(
                     'assets/images/empty1.png',
                     fit: BoxFit.cover,
                   ),
                 ),
               ],
-            )
-          : ListView.builder(
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 10,
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  shadowColor: Colors.green,
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 40,
-                      child: Padding(
-                        padding: EdgeInsets.all(5),
-                        child: FittedBox(
-                          child:
-                              Text('\$' + tranactions[index].amount.toString()),
-                        ),
-                      ),
-                    ),
-                    title: Text(
-                      tranactions[index].title,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    subtitle: Text(
-                      DateFormat.yMMMd().format(tranactions[index].date),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.cancel_sharp),
-                      color: Colors.red,
-                      onPressed: ()=> deleteTransaction(tranactions[index].id),
-                    ),
-                  ),
-                );
-              },
-              itemCount: tranactions.length,
-            ),
-    );
+            );
+          })
+        : ListView.builder(
+            itemBuilder: (context, index) {
+              return TransactionItem(
+                  transaction: tranactions[index],
+                  mediaQuery: mediaQuery,
+                  deleteTransaction: deleteTransaction);
+            },
+            itemCount: tranactions.length,
+          );
   }
 }

@@ -1,3 +1,6 @@
+import 'dart:io'; // to detect the platform that the app run on it /
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -26,13 +29,13 @@ class _NewTransactionState extends State<NewTransaction> {
       return;
     }
 
-     widget._addNewTransaction(
-     titleController.text,
+    widget._addNewTransaction(
+      titleController.text,
       enteredAmount,
       _selectedDate,
     );
 
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(); //-------------------------
   }
 
   void _showingDatePicker() {
@@ -42,9 +45,9 @@ class _NewTransactionState extends State<NewTransaction> {
       firstDate: DateTime(2021),
       lastDate: DateTime.now(),
     ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
+      //if (pickedDate == null) {
+      //   return;
+      //  }
       setState(() {
         _selectedDate = pickedDate;
       });
@@ -53,108 +56,123 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 20,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                  // labelText: 'Title',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 2,
-                      color: Colors.green,
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 10,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                scrollPadding: EdgeInsets.all(5.0),
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
                     ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.green,
-                      width: 2,
-                    ),
-                  ),
-                  hintText: 'Title'),
-              controller: titleController,
-              onSubmitted: (_) => submitData,
-              // onChanged: (String value) {
-              // titleInput = value;
-              // },
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                  // labelText: 'Amount',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 2,
-                      color: Colors.green,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.green,
-                      width: 2,
-                    ),
-                  ),
-                  hintText: 'Amount'),
-
-              // onChanged: (String value) => amountInput = value,
-              controller: amountController,
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) => submitData,
-            ),
-            Container(
-              height: 80,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      _selectedDate == null
-                          ? 'No Date Selected!'
-                          : 'Picked Date : ' +
-                              DateFormat.yMd().format(_selectedDate),
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  RaisedButton(
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0)),
-                    color: Colors.green,
-                    textColor: Colors.white,
-                    onPressed: _showingDatePicker,
-                    child: Text(
-                      'Choose The Date',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
+                    filled: true,
+                    hintStyle: TextStyle(color: Colors.grey[700]),
+                    // hintText: 'Title',
+                    labelText: 'Title',
+                    labelStyle: TextStyle(fontSize: 20.0),
+                    fillColor: Colors.white70),
+                controller: titleController,
+                onSubmitted: (_) => submitData,
+                // onChanged: (String value) {
+                // titleInput = value;
+                // },
               ),
-            ),
-            RaisedButton(
-              shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(5.0)),
-              color: Colors.purple,
-              textColor: Colors.white,
-              onPressed: submitData,
-              // print(titleInput);
-              // print(amountInput);
-              // print(titleController.text);
-              // print(amoutController.text);
+              SizedBox(
+                height: 10,
+              ),
+              TextField(
+                scrollPadding: EdgeInsets.all(5.0),
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
+                    ),
+                    filled: true,
+                    hintStyle: TextStyle(color: Colors.grey[700]),
+                    //  hintText: 'Amount',
+                    labelText: 'Amount',
+                    labelStyle: TextStyle(fontSize: 20.0),
+                    fillColor: Colors.white70),
 
-              child: Text(
-                'Add transaction',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                // onChanged: (String value) => amountInput = value,
+                controller: amountController,
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => submitData,
+              ),
+              Container(
+                height: 80,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _selectedDate == null
+                            ? 'No Date Selected!'
+                            : 'Picked Date : ' +
+                                DateFormat.yMd().format(_selectedDate),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    Platform.isIOS
+                        ? CupertinoButton(
+                            color: Colors.blue,
+                            child: Text(
+                              'Choose The Date',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            onPressed: _showingDatePicker,
+                          )
+                        : RaisedButton(
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(5.0)),
+                            color: Colors.green,
+                            textColor: Colors.white,
+                            onPressed: _showingDatePicker,
+                            child: Text(
+                              'Choose The Date',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                          )
+                  ],
                 ),
               ),
-            ),
-          ],
+              RaisedButton(
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(5.0)),
+                color: Colors.purple,
+                textColor: Colors.white,
+                onPressed: submitData,
+                // print(titleInput);
+                // print(amountInput);
+                // print(titleController.text);
+                // print(amoutController.text);
+
+                child: Text(
+                  'Add transaction',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
